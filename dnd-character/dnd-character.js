@@ -12,57 +12,33 @@ export const abilityModifier = (n) => {
   return floor((n - 10) / 2);
 };
 
-const generateRandomNumber = (min, max) => parseInt(random() * (max - min) + min);
-
-const ROLLABLE_CHARACTER_ATTRIBUTES = [
-  'strength',
-  'dexterity',
-  'constitution',
-  'intelligence',
-  'wisdom',
-  'charisma',
-];
+const rollDie = (min, max) => parseInt(random() * (max - min) + min);
 
 export class Character {
-  constructor() {
-    this._hitpoints = 10;
+  static ATTRIBUTES = [
+    'strength',
+    'dexterity',
+    'constitution',
+    'intelligence',
+    'wisdom',
+    'charisma',
+  ];
 
-    for (let key of ROLLABLE_CHARACTER_ATTRIBUTES) {
-      this[key] = Character.rollAbility();
-    }
-  }
+  static BASE_HITPOINTS = 10;
 
   static rollAbility() {
-    const rolls = Array.from({ length: 4 }, () => generateRandomNumber(1, 6));
+    const rolls = Array.from({ length: 4 }, () => rollDie(1, 6));
     const highestRolls = rolls.sort().splice(1);
     return highestRolls.reduce((sum, roll) => sum + roll, 0);
   }
 
-  get strength() {
-    return this._strength;
-  }
+  constructor() {
+    this._hitpoints = Character.BASE_HITPOINTS;
 
-  get dexterity() {
-    return this._dexterity;
-  }
+    for (let key of Character.ATTRIBUTES) {
+      this[key] = Character.rollAbility();
+    }
 
-  get constitution() {
-    return this._constitution;
-  }
-
-  get intelligence() {
-    return this._intelligence;
-  }
-
-  get wisdom() {
-    return this._wisdom;
-  }
-
-  get charisma() {
-    return this._charisma;
-  }
-
-  get hitpoints() {
-    return this._hitpoints + abilityModifier(this.constitution);
+    this.hitpoints = Character.BASE_HITPOINTS + abilityModifier(this.constitution);
   }
 }

@@ -1,42 +1,68 @@
-//
-// This is only a SKELETON file for the 'D&D Character' exercise. It's been provided as a
-// convenience to get you started writing code faster.
-//
+const { floor, random } = Math;
 
-export const abilityModifier = () => {
-  throw new Error('Remove this statement and implement this function');
+export const abilityModifier = (n) => {
+  if (n < 3) {
+    throw new Error('Ability scores must be at least 3');
+  }
+
+  if (n > 18) {
+    throw new Error('Ability scores can be at most 18');
+  }
+
+  return floor((n - 10) / 2);
 };
 
+const generateRandomNumber = (min, max) => parseInt(random() * (max - min) + min);
+
+const ROLLABLE_CHARACTER_ATTRIBUTES = [
+  'strength',
+  'dexterity',
+  'constitution',
+  'intelligence',
+  'wisdom',
+  'charisma',
+];
+
 export class Character {
+  constructor() {
+    this._hitpoints = 10;
+
+    for (let key of ROLLABLE_CHARACTER_ATTRIBUTES) {
+      this[key] = Character.rollAbility();
+    }
+  }
+
   static rollAbility() {
-    throw new Error('Remove this statement and implement this function');
+    const rolls = Array.from({ length: 4 }, () => generateRandomNumber(1, 6));
+    const highestRolls = rolls.sort().splice(1);
+    return highestRolls.reduce((sum, roll) => sum + roll, 0);
   }
 
   get strength() {
-    throw new Error('Remove this statement and implement this function');
+    return this._strength;
   }
 
   get dexterity() {
-    throw new Error('Remove this statement and implement this function');
+    return this._dexterity;
   }
 
   get constitution() {
-    throw new Error('Remove this statement and implement this function');
+    return this._constitution;
   }
 
   get intelligence() {
-    throw new Error('Remove this statement and implement this function');
+    return this._intelligence;
   }
 
   get wisdom() {
-    throw new Error('Remove this statement and implement this function');
+    return this._wisdom;
   }
 
   get charisma() {
-    throw new Error('Remove this statement and implement this function');
+    return this._charisma;
   }
 
   get hitpoints() {
-    throw new Error('Remove this statement and implement this function');
+    return this._hitpoints + abilityModifier(this.constitution);
   }
 }

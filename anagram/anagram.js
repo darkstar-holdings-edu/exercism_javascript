@@ -1,30 +1,42 @@
-const getCharCounts = (word) =>
-  [...word].reduce((charCount, char) => {
-    const lowerCaseChar = char.toLowerCase();
-    charCount[lowerCaseChar] ? charCount[lowerCaseChar]++ : (charCount[lowerCaseChar] = 1);
-    return charCount;
-  }, {});
+const getCharCounts = (word) => {
+  const charCount = {};
+
+  for (const char of word.toLowerCase()) {
+    charCount[char] = (charCount[char] || 0) + 1;
+  }
+
+  return charCount;
+};
 
 export const findAnagrams = (target, candidates) => {
+  if (typeof target !== 'string' || !Array.isArray(candidates)) {
+    throw new Error('Invalid parameters');
+  }
+
   const targetCharCount = getCharCounts(target);
 
-  return [...candidates].reduce((anagrams, word) => {
-    if (word.length === target.length && word.toLowerCase() !== target.toLowerCase()) {
-      const candidateCharCount = getCharCounts(word);
+  const isAnagram = (candidate) => {
+    if (candidate.length !== target.length || candidate.toLowerCase() === target.toLowerCase())
+      return false;
 
-      let isAnagram = true;
-      for (const char in candidateCharCount) {
-        if (candidateCharCount[char] > (targetCharCount[char] || 0)) {
-          isAnagram = false;
-          break;
-        }
-      }
+    const candidateCharCount = getCharCounts(candidate);
 
-      if (isAnagram) {
-        anagrams.push(word);
+    for (const char in candidateCharCount) {
+      if (candidateCharCount[char] > (targetCharCount[char] || 0)) {
+        return false;
       }
     }
 
-    return anagrams;
-  }, []);
+    return true;
+  };
+
+  const anagrams = new Set();
+
+  for (const candidate of candidates) {
+    if (isAnagram(candidate)) {
+      anagrams.add(candidate);
+    }
+  }
+
+  return [...anagrams];
 };

@@ -1,9 +1,11 @@
 const getCharacterCounts = (word) => {
   const charCount = {};
   const lowercaseWord = word.toLowerCase();
+
   for (const char of lowercaseWord) {
     charCount[char] = (charCount[char] || 0) + 1;
   }
+
   return charCount;
 };
 
@@ -20,6 +22,7 @@ const isAnagram = (word1, word2, targetCharCount) => {
       return false;
     }
   }
+
   return true;
 };
 
@@ -36,5 +39,6 @@ export const findAnagrams = (target, candidates) => {
       anagrams.add(candidate);
     }
   }
+
   return Array.from(anagrams);
 };

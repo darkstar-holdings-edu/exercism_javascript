@@ -18,7 +18,8 @@ const getCharacterCounts = (word) => {
  *
  * @param {string} word1 - The first word to check.
  * @param {string} word2 - The second word to check.
- * @param {Object} targetCharCount - The character count object for the target word.
+ * @param {Object} [targetCharCount] - (Optional) The character count object for the target word.
+ * If specified, this object will be used instead of generating a new one from word2.
  * @returns {boolean} Whether the two words are anagrams of each other.
  */
 const isAnagram = (word1, word2, targetCharCount) => {

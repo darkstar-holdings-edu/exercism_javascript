@@ -1,26 +1,29 @@
+const NOTES = [
+  { note: 'C', enharmonic: 'C' },
+  { note: 'C#', enharmonic: 'Db' },
+  { note: 'D', enharmonic: 'D' },
+  { note: 'D#', enharmonic: 'Eb' },
+  { note: 'E', enharmonic: 'E' },
+  { note: 'F', enharmonic: 'F' },
+  { note: 'F#', enharmonic: 'Gb' },
+  { note: 'G', enharmonic: 'G' },
+  { note: 'G#', enharmonic: 'Ab' },
+  { note: 'A', enharmonic: 'A' },
+  { note: 'A#', enharmonic: 'Bb' },
+  { note: 'B', enharmonic: 'B' },
+];
+
+/**
+ * The flat scales that use enharmonic notes.
+ */
+const FLAT_SCALE_SIGNATURES = ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'd', 'g', 'c', 'f', 'bb', 'eb'];
+
+/**
+ * The intervals represented by each character.
+ */
+const INTERVALS = { m: 1, M: 2, A: 3 };
+
 export class Scale {
-  #NOTES = [
-    { note: 'C', enharmonic: 'C' },
-    { note: 'C#', enharmonic: 'Db' },
-    { note: 'D', enharmonic: 'D' },
-    { note: 'D#', enharmonic: 'Eb' },
-    { note: 'E', enharmonic: 'E' },
-    { note: 'F', enharmonic: 'F' },
-    { note: 'F#', enharmonic: 'Gb' },
-    { note: 'G', enharmonic: 'G' },
-    { note: 'G#', enharmonic: 'Ab' },
-    { note: 'A', enharmonic: 'A' },
-    { note: 'A#', enharmonic: 'Bb' },
-    { note: 'B', enharmonic: 'B' },
-  ];
-
-  /**
-   * The flat scales that use enharmonic notes.
-   */
-  #FLAT_SCALE_SIGNATURES = ['F', 'Bb', 'Eb', 'Ab', 'Db', 'Gb', 'd', 'g', 'c', 'f', 'bb', 'eb'];
-
-  #INTERVALS = { m: 1, M: 2, A: 3 };
-
   /**
    * Creates a new Scale instance with the given tonic note.
    *
@@ -55,7 +58,7 @@ export class Scale {
    * @private
    */
   _is_flat_scale_tonic() {
-    return this.#FLAT_SCALE_SIGNATURES.find((e) => e === this.tonic) ? true : false;
+    return FLAT_SCALE_SIGNATURES.find((e) => e === this.tonic) ? true : false;
   }
 
   /**
@@ -64,7 +67,7 @@ export class Scale {
    * @private
    */
   _get_tonic_note_index() {
-    return this.#NOTES.findIndex(
+    return NOTES.findIndex(
       (element) =>
         element['note'] === this._normalizedTonic || element['enharmonic'] === this._normalizedTonic
     );
@@ -76,13 +79,10 @@ export class Scale {
    * @private
    */
   _build_scale(startIndex) {
-    return [...this.#NOTES.slice(startIndex), ...this.#NOTES.slice(0, startIndex)].reduce(
-      (acc, cur) => {
-        const note = this._useEnharmonicNotes ? cur['enharmonic'] : cur['note'];
-        return [...acc, note];
-      },
-      []
-    );
+    return [...NOTES.slice(startIndex), ...NOTES.slice(0, startIndex)].reduce((acc, cur) => {
+      const note = this._useEnharmonicNotes ? cur['enharmonic'] : cur['note'];
+      return [...acc, note];
+    }, []);
   }
 
   /**
@@ -105,7 +105,7 @@ export class Scale {
 
     let noteIndex = 0;
     for (const interval of intervals.split('')) {
-      noteIndex += this.#INTERVALS[interval];
+      noteIndex += INTERVALS[interval];
       notes.push(this.scale[noteIndex]);
     }
 

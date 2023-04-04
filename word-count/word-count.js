@@ -1,8 +1,10 @@
-//
-// This is only a SKELETON file for the 'Word Count' exercise. It's been provided as a
-// convenience to get you started writing code faster.
-//
+const WORDS_REGEX = /\w+('\w+)?/g;
 
-export const countWords = () => {
-  throw new Error('Remove this statement and implement this function');
+export const countWords = (text) => {
+  return [...text.toLowerCase().matchAll(WORDS_REGEX)]
+    .map((match) => match[0])
+    .reduce((counts, word) => {
+      counts[word] = (counts[word] || 0) + 1;
+      return counts;
+    }, {});
 };
